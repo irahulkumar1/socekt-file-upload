@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>multiple file uploading app</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Socket.io Multipe file uplaoding app</h1>
+        <form action="">
+            <div class="form-group col-lg-5">
+                <input type="file" multiple accept="image/*" id="upload" required class="form-control">
+            </div>
+        </form>
+
+
+
+
+    </div>
+</body>
+<script src="/siofu/client.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+    document.addEventListener(
+        "DOMContentLoaded", function () {
+            var socket = io.connect()
+
+            //invoke socket.io file upload lib
+            var siofu = new SocketIOFileUpload(socket);
+            siofu.listenOnInput(document.getElementById('upload'))
+
+            //do Something on upload progress:
+            siofu.addEventListener("progress", function (event) {
+                var percent = (event.bytesLoaded / event.file.size) * 100;
+                console.log("File is ", percent.toFixed(2), "percent loaded");
+            });
+
+            siofu.addEventListener('complete', function (event) {
+                console.log(event)
+            })
+        })
+</script>
+
+</html>
